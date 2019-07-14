@@ -1,0 +1,13 @@
+use_frameworks!
+
+platform :ios, '8.0'
+
+target 'DRRouter_Example' do
+  pod 'DRRouter', :path => '../'
+
+  target 'DRRouter_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
