@@ -1,0 +1,6 @@
+framework module Pods_DRRouter_Tests {
+  umbrella header "Pods-DRRouter_Tests-umbrella.h"
+
+  export *
+  module * { export * }
+}

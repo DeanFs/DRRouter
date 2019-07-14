@@ -1,0 +1,16 @@
+PODS:
+  - DRRouter (0.1.0)
+
+DEPENDENCIES:
+  - DRRouter (from `../`)
+
+EXTERNAL SOURCES:
+  DRRouter:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  DRRouter: e647f0beca92bb995e6865ab453edd8f5236514a
+
+PODFILE CHECKSUM: 0183531764e787ccfd6b13afe9abcd882c5ca679
+
+COCOAPODS: 1.7.0.rc.1
