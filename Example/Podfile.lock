@@ -1,16 +1,23 @@
 PODS:
-  - DRRouter (0.1.0)
+  - DRMacroDefines (0.1.2)
+  - DRRouter (0.1.0):
+    - DRMacroDefines
 
 DEPENDENCIES:
   - DRRouter (from `../`)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - DRMacroDefines
 
 EXTERNAL SOURCES:
   DRRouter:
     :path: "../"
 
 SPEC CHECKSUMS:
-  DRRouter: e647f0beca92bb995e6865ab453edd8f5236514a
+  DRMacroDefines: 58aa271bc1c4170fa09f4f33dcad18fc4f21a57e
+  DRRouter: a38a1291c4439ef7c9761136a593095275aaff86
 
 PODFILE CHECKSUM: 0183531764e787ccfd6b13afe9abcd882c5ca679
 
-COCOAPODS: 1.7.0.rc.1
+COCOAPODS: 1.6.1

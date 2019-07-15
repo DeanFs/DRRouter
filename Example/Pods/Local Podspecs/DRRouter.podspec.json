@@ -1,9 +1,9 @@
 {
   "name": "DRRouter",
   "version": "0.1.0",
-  "summary": "A short description of DRRouter.",
+  "summary": "适用于组件化的路由管理器",
   "description": "TODO: Add long description of the pod here.",
-  "homepage": "https://github.com/Dean_F/DRRouter",
+  "homepage": "https://github.com/DeanFs/DRRouter",
   "license": {
     "type": "MIT",
     "file": "LICENSE"
@@ -12,11 +12,16 @@
     "Dean_F": "stone.feng1990@gmail.com"
   },
   "source": {
-    "git": "https://github.com/Dean_F/DRRouter.git",
+    "git": "https://github.com/DeanFs/DRRouter.git",
     "tag": "0.1.0"
   },
   "platforms": {
     "ios": "8.0"
   },
-  "source_files": "DRRouter/Classes/**/*"
+  "source_files": "DRRouter/Classes/**/*",
+  "dependencies": {
+    "DRMacroDefines": [
+
+    ]
+  }
 }
