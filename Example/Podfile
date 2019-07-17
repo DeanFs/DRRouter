@@ -4,6 +4,8 @@ platform :ios, '8.0'
 
 target 'DRRouter_Example' do
   pod 'DRRouter', :path => '../'
+  pod 'BlocksKit'
+  pod 'MJExtension'
 
   target 'DRRouter_Tests' do
     inherit! :search_paths

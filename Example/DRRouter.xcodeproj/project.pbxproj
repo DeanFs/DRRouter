@@ -15,7 +15,6 @@
 		6003F598195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F596195388D20070C39A /* InfoPlist.strings */; };
 		6003F59A195388D20070C39A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F599195388D20070C39A /* main.m */; };
 		6003F59E195388D20070C39A /* DRAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F59D195388D20070C39A /* DRAppDelegate.m */; };
-		6003F5A7195388D20070C39A /* DRViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5A6195388D20070C39A /* DRViewController.m */; };
 		6003F5A9195388D20070C39A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5A8195388D20070C39A /* Images.xcassets */; };
 		6003F5B0195388D20070C39A /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F5AF195388D20070C39A /* XCTest.framework */; };
 		6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
@@ -24,6 +23,17 @@
 		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
 		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
+		FEB9AC2922DEB9D700B91032 /* DRRouterCommandList.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9AC1622DEB9D700B91032 /* DRRouterCommandList.m */; };
+		FEB9AC2A22DEB9D700B91032 /* DRWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9AC1822DEB9D700B91032 /* DRWebViewController.m */; };
+		FEB9AC2B22DEB9D700B91032 /* DRBViewController1.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9AC1A22DEB9D700B91032 /* DRBViewController1.m */; };
+		FEB9AC2C22DEB9D700B91032 /* DRBViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9AC1B22DEB9D700B91032 /* DRBViewController2.m */; };
+		FEB9AC2D22DEB9D700B91032 /* DRBViewController2.xib in Resources */ = {isa = PBXBuildFile; fileRef = FEB9AC1C22DEB9D700B91032 /* DRBViewController2.xib */; };
+		FEB9AC2E22DEB9D700B91032 /* DRBViewController1.xib in Resources */ = {isa = PBXBuildFile; fileRef = FEB9AC1E22DEB9D700B91032 /* DRBViewController1.xib */; };
+		FEB9AC2F22DEB9D700B91032 /* DRAViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9AC2422DEB9D700B91032 /* DRAViewController2.m */; };
+		FEB9AC3022DEB9D700B91032 /* DRAViewController1.xib in Resources */ = {isa = PBXBuildFile; fileRef = FEB9AC2522DEB9D700B91032 /* DRAViewController1.xib */; };
+		FEB9AC3122DEB9D700B91032 /* DRAViewController2.xib in Resources */ = {isa = PBXBuildFile; fileRef = FEB9AC2622DEB9D700B91032 /* DRAViewController2.xib */; };
+		FEB9AC3222DEB9D700B91032 /* DRAViewController1.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9AC2722DEB9D700B91032 /* DRAViewController1.m */; };
+		FEB9AC3322DEB9D700B91032 /* DRRouterHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9AC2822DEB9D700B91032 /* DRRouterHomeViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,7 +50,7 @@
 		2480F34A8214B2E5EEDAEFED /* Pods-DRRouter_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DRRouter_Tests.release.xcconfig"; path = "Target Support Files/Pods-DRRouter_Tests/Pods-DRRouter_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		302AFC3FA90C279EA10B0678 /* Pods-DRRouter_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DRRouter_Example.debug.xcconfig"; path = "Target Support Files/Pods-DRRouter_Example/Pods-DRRouter_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		3FBBB3773788799CE005F78D /* Pods_DRRouter_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DRRouter_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		5DFA081014709FBFEE6E7850 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		5DFA081014709FBFEE6E7850 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		6003F58A195388D20070C39A /* DRRouter_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DRRouter_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6003F58F195388D20070C39A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -51,8 +61,6 @@
 		6003F59B195388D20070C39A /* DRRouter-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DRRouter-Prefix.pch"; sourceTree = "<group>"; };
 		6003F59C195388D20070C39A /* DRAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRAppDelegate.h; sourceTree = "<group>"; };
 		6003F59D195388D20070C39A /* DRAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRAppDelegate.m; sourceTree = "<group>"; };
-		6003F5A5195388D20070C39A /* DRViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRViewController.h; sourceTree = "<group>"; };
-		6003F5A6195388D20070C39A /* DRViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRViewController.m; sourceTree = "<group>"; };
 		6003F5A8195388D20070C39A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		6003F5AE195388D20070C39A /* DRRouter_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DRRouter_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F5AF195388D20070C39A /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -64,9 +72,27 @@
 		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		96752FE371260FAD7FA65722 /* Pods-DRRouter_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DRRouter_Tests.debug.xcconfig"; path = "Target Support Files/Pods-DRRouter_Tests/Pods-DRRouter_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		9CB478CCBD32584D235126F8 /* Pods_DRRouter_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DRRouter_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A1ECFA0BC76D41ECCABC5A81 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
-		B1FBD0EB9654FBF4343C9800 /* DRRouter.podspec */ = {isa = PBXFileReference; includeInIndex = 1; name = DRRouter.podspec; path = ../DRRouter.podspec; sourceTree = "<group>"; };
+		A1ECFA0BC76D41ECCABC5A81 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		B1FBD0EB9654FBF4343C9800 /* DRRouter.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = DRRouter.podspec; path = ../DRRouter.podspec; sourceTree = "<group>"; };
 		E46278A0B4EC71170F1D736A /* Pods-DRRouter_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DRRouter_Example.release.xcconfig"; path = "Target Support Files/Pods-DRRouter_Example/Pods-DRRouter_Example.release.xcconfig"; sourceTree = "<group>"; };
+		FEB9AC1522DEB9D700B91032 /* DRRouterCommandList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DRRouterCommandList.h; sourceTree = "<group>"; };
+		FEB9AC1622DEB9D700B91032 /* DRRouterCommandList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DRRouterCommandList.m; sourceTree = "<group>"; };
+		FEB9AC1722DEB9D700B91032 /* DRRouterHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DRRouterHomeViewController.h; sourceTree = "<group>"; };
+		FEB9AC1822DEB9D700B91032 /* DRWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DRWebViewController.m; sourceTree = "<group>"; };
+		FEB9AC1A22DEB9D700B91032 /* DRBViewController1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DRBViewController1.m; sourceTree = "<group>"; };
+		FEB9AC1B22DEB9D700B91032 /* DRBViewController2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DRBViewController2.m; sourceTree = "<group>"; };
+		FEB9AC1C22DEB9D700B91032 /* DRBViewController2.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DRBViewController2.xib; sourceTree = "<group>"; };
+		FEB9AC1D22DEB9D700B91032 /* DRBViewController1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DRBViewController1.h; sourceTree = "<group>"; };
+		FEB9AC1E22DEB9D700B91032 /* DRBViewController1.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DRBViewController1.xib; sourceTree = "<group>"; };
+		FEB9AC1F22DEB9D700B91032 /* DRBViewController2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DRBViewController2.h; sourceTree = "<group>"; };
+		FEB9AC2022DEB9D700B91032 /* DRWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DRWebViewController.h; sourceTree = "<group>"; };
+		FEB9AC2222DEB9D700B91032 /* DRAViewController2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DRAViewController2.h; sourceTree = "<group>"; };
+		FEB9AC2322DEB9D700B91032 /* DRAViewController1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DRAViewController1.h; sourceTree = "<group>"; };
+		FEB9AC2422DEB9D700B91032 /* DRAViewController2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DRAViewController2.m; sourceTree = "<group>"; };
+		FEB9AC2522DEB9D700B91032 /* DRAViewController1.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DRAViewController1.xib; sourceTree = "<group>"; };
+		FEB9AC2622DEB9D700B91032 /* DRAViewController2.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DRAViewController2.xib; sourceTree = "<group>"; };
+		FEB9AC2722DEB9D700B91032 /* DRAViewController1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DRAViewController1.m; sourceTree = "<group>"; };
+		FEB9AC2822DEB9D700B91032 /* DRRouterHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DRRouterHomeViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,11 +158,10 @@
 		6003F593195388D20070C39A /* Example for DRRouter */ = {
 			isa = PBXGroup;
 			children = (
+				FEB9AC1322DEB9D700B91032 /* RouterTest */,
 				6003F59C195388D20070C39A /* DRAppDelegate.h */,
 				6003F59D195388D20070C39A /* DRAppDelegate.m */,
 				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
-				6003F5A5195388D20070C39A /* DRViewController.h */,
-				6003F5A6195388D20070C39A /* DRViewController.m */,
 				71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
 				6003F594195388D20070C39A /* Supporting Files */,
@@ -193,8 +218,56 @@
 				96752FE371260FAD7FA65722 /* Pods-DRRouter_Tests.debug.xcconfig */,
 				2480F34A8214B2E5EEDAEFED /* Pods-DRRouter_Tests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		FEB9AC1322DEB9D700B91032 /* RouterTest */ = {
+			isa = PBXGroup;
+			children = (
+				FEB9AC1722DEB9D700B91032 /* DRRouterHomeViewController.h */,
+				FEB9AC2822DEB9D700B91032 /* DRRouterHomeViewController.m */,
+				FEB9AC2022DEB9D700B91032 /* DRWebViewController.h */,
+				FEB9AC1822DEB9D700B91032 /* DRWebViewController.m */,
+				FEB9AC2122DEB9D700B91032 /* AModule */,
+				FEB9AC1922DEB9D700B91032 /* BModule */,
+				FEB9AC1422DEB9D700B91032 /* CommonModule */,
+			);
+			path = RouterTest;
+			sourceTree = "<group>";
+		};
+		FEB9AC1422DEB9D700B91032 /* CommonModule */ = {
+			isa = PBXGroup;
+			children = (
+				FEB9AC1522DEB9D700B91032 /* DRRouterCommandList.h */,
+				FEB9AC1622DEB9D700B91032 /* DRRouterCommandList.m */,
+			);
+			path = CommonModule;
+			sourceTree = "<group>";
+		};
+		FEB9AC1922DEB9D700B91032 /* BModule */ = {
+			isa = PBXGroup;
+			children = (
+				FEB9AC1A22DEB9D700B91032 /* DRBViewController1.m */,
+				FEB9AC1B22DEB9D700B91032 /* DRBViewController2.m */,
+				FEB9AC1C22DEB9D700B91032 /* DRBViewController2.xib */,
+				FEB9AC1D22DEB9D700B91032 /* DRBViewController1.h */,
+				FEB9AC1E22DEB9D700B91032 /* DRBViewController1.xib */,
+				FEB9AC1F22DEB9D700B91032 /* DRBViewController2.h */,
+			);
+			path = BModule;
+			sourceTree = "<group>";
+		};
+		FEB9AC2122DEB9D700B91032 /* AModule */ = {
+			isa = PBXGroup;
+			children = (
+				FEB9AC2222DEB9D700B91032 /* DRAViewController2.h */,
+				FEB9AC2322DEB9D700B91032 /* DRAViewController1.h */,
+				FEB9AC2422DEB9D700B91032 /* DRAViewController2.m */,
+				FEB9AC2522DEB9D700B91032 /* DRAViewController1.xib */,
+				FEB9AC2622DEB9D700B91032 /* DRAViewController2.xib */,
+				FEB9AC2722DEB9D700B91032 /* DRAViewController1.m */,
+			);
+			path = AModule;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -248,6 +321,9 @@
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = Dean_F;
 				TargetAttributes = {
+					6003F589195388D20070C39A = {
+						DevelopmentTeam = RRKA38P3VU;
+					};
 					6003F5AD195388D20070C39A = {
 						TestTargetID = 6003F589195388D20070C39A;
 					};
@@ -258,6 +334,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -279,8 +356,12 @@
 			files = (
 				873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */,
 				71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */,
+				FEB9AC3022DEB9D700B91032 /* DRAViewController1.xib in Resources */,
+				FEB9AC2D22DEB9D700B91032 /* DRBViewController2.xib in Resources */,
+				FEB9AC2E22DEB9D700B91032 /* DRBViewController1.xib in Resources */,
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
 				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,
+				FEB9AC3122DEB9D700B91032 /* DRAViewController2.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -346,11 +427,15 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-DRRouter_Example/Pods-DRRouter_Example-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/BlocksKit/BlocksKit.framework",
 				"${BUILT_PRODUCTS_DIR}/DRRouter/DRRouter.framework",
+				"${BUILT_PRODUCTS_DIR}/MJExtension/MJExtension.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BlocksKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DRRouter.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MJExtension.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -365,8 +450,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				6003F59E195388D20070C39A /* DRAppDelegate.m in Sources */,
-				6003F5A7195388D20070C39A /* DRViewController.m in Sources */,
+				FEB9AC2B22DEB9D700B91032 /* DRBViewController1.m in Sources */,
+				FEB9AC2922DEB9D700B91032 /* DRRouterCommandList.m in Sources */,
+				FEB9AC2A22DEB9D700B91032 /* DRWebViewController.m in Sources */,
+				FEB9AC3222DEB9D700B91032 /* DRAViewController1.m in Sources */,
+				FEB9AC2C22DEB9D700B91032 /* DRBViewController2.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
+				FEB9AC3322DEB9D700B91032 /* DRRouterHomeViewController.m in Sources */,
+				FEB9AC2F22DEB9D700B91032 /* DRAViewController2.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -494,6 +585,7 @@
 			baseConfigurationReference = 302AFC3FA90C279EA10B0678 /* Pods-DRRouter_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = RRKA38P3VU;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DRRouter/DRRouter-Prefix.pch";
 				INFOPLIST_FILE = "DRRouter/DRRouter-Info.plist";
@@ -510,6 +602,7 @@
 			baseConfigurationReference = E46278A0B4EC71170F1D736A /* Pods-DRRouter_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = RRKA38P3VU;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DRRouter/DRRouter-Prefix.pch";
 				INFOPLIST_FILE = "DRRouter/DRRouter-Info.plist";
