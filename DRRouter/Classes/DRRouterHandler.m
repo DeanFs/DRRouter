@@ -200,6 +200,9 @@
             animation:(BOOL)animation
              callback:(DRRouterCallBackBlock)callback
          setupPresent:(UIViewController *(^)(UIViewController *toViewController))setupPresentBlock {
+    if (command.length == 0) {
+        return;
+    }
     DRRouterHandler *router = [DRRouterHandler router];
     if ([router.loginCommand isEqualToString:(NSString *)command]) {
         if (router.loginHandler == nil) {
