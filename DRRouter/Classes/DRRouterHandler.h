@@ -63,7 +63,7 @@
                用户登录完成后，若调用continueRouterBlock，则会继续完成之前的将要执行的路由跳转
  @param loginStatusBlock 获取当前用户登录状态的回调
  */
-+ (void)setupUserLoginHandle:(void (^)(dispatch_block_t continueRouterBlock))handle
++ (void)setupUserLoginHandle:(void (^)(const NSString *command, dispatch_block_t continueRouterBlock))handle
             loginStatusBlock:(BOOL(^)(void))loginStatusBlock;
 
 #pragma mark - 发起路由跳转，以下方式选一种

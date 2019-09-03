@@ -29,7 +29,7 @@
 
 // 用户登录响应
 @property (nonatomic, copy) BOOL (^loginStatusBlock)(void);
-@property (nonatomic, copy) void (^loginHandler)(dispatch_block_t continueRouterBlock);
+@property (nonatomic, copy) void (^loginHandler)(const NSString *command, dispatch_block_t continueRouterBlock);
 
 @end
 
@@ -117,7 +117,7 @@
  用户登录完成后，若调用continueRouterBlock，则会继续完成之前的将要执行的路由跳转
  @param loginStatusBlock 获取当前用户登录状态的回调
  */
-+ (void)setupUserLoginHandle:(void (^)(dispatch_block_t continueRouterBlock))handle
++ (void)setupUserLoginHandle:(void (^)(const NSString *command, dispatch_block_t continueRouterBlock))handle
             loginStatusBlock:(BOOL(^)(void))loginStatusBlock {
     [DRRouterHandler router].loginHandler = handle;
     [DRRouterHandler router].loginStatusBlock = loginStatusBlock;
@@ -248,7 +248,7 @@
         if (self.loginStatusBlock != nil && self.loginHandler != nil) {
             if (!self.loginStatusBlock()) {
                 kDRWeakSelf
-                self.loginHandler(^{
+                self.loginHandler(command, ^{
                     [weakSelf sendCommand:command withVc:fromVc param:param isPresent:isPresent animation:animation callback:callback setupPresent:setupPresentBlock];
                 });
                 return;
