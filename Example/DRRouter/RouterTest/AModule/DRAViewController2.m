@@ -17,6 +17,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *label;
 
 @property (nonatomic, copy) NSString *key;
+@property (nonatomic, copy) NSString *keyFromParam;
 @property (nonatomic, strong) DRCustomModel *customModel;
 
 @end
@@ -37,7 +38,9 @@
     
     self.title = NSStringFromClass([self class]);
     if (self.param.count > 0) {
-        self.label.text = self.param[@"key"];
+        self.label.text = self.param[@"keyFromParam"];
+    } else if (self.keyFromParam.length) {
+        self.label.text = self.keyFromParam;
     } else if (self.key.length) {
         self.label.text = self.key;
     } else if (self.customModel != nil) {

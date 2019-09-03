@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'DRRouter'
-  s.version          = '0.1.3'
+  s.version          = '0.1.4'
   s.summary          = '适用于组件化的路由管理器'
 
 # This description is used to generate tags and improve search results.

@@ -7,8 +7,6 @@
 
 #import <Foundation/Foundation.h>
 
-NS_ASSUME_NONNULL_BEGIN
-
 /**
  路由跳转的回调
  从A路由跳转到B，可以在A中传入回调，用于响应B中发生的事件
@@ -50,5 +48,3 @@ typedef void (^DRRouterCallBackBlock)(NSInteger actionCode, NSDictionary *param)
                       callback:(DRRouterCallBackBlock)callback;
 
 @end
-
-NS_ASSUME_NONNULL_END

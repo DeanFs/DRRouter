@@ -34,8 +34,32 @@
         _commad = command;
         _targetPageClass = targetPageClass;
         _needLogin = needLogin;
+        _staticParam = [self paramFromCommand:command];
     }
     return self;
+}
+
+- (NSDictionary *)paramFromCommand:(const NSString *)command {
+    if (command.length == 0 || ![command containsString:@"?"]) {
+        return nil;
+    }
+    
+    NSScanner *scanner = [NSScanner scannerWithString:(NSString *)command];
+    [scanner setCharactersToBeSkipped:[NSCharacterSet characterSetWithCharactersInString:@"&?"] ];
+    [scanner scanUpToString:@"?" intoString:nil];
+    
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    NSString *tmpValue;
+    while ([scanner scanUpToString:@"&" intoString:&tmpValue]) {
+        NSArray *components = [tmpValue componentsSeparatedByString:@"="];
+        if (components.count >= 2) {
+            NSString *key = [components[0] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            NSString *value = [components[1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            
+            parameters[key] = value;
+        }
+    }
+    return parameters;
 }
 
 @end

@@ -80,7 +80,7 @@
     model.key = @"传入自定义model";
     [DRRouterHandler handleCommand:A2
                             fromVc:self
-                         withParam:/*@{@"key": @"哈哈哈哈哈哈"}*/ @{@"customModel":model}
+                         withParam:/*@{@"keyFromParam": @"哈哈哈哈哈哈"}*/ @{@"customModel":model}
                           callback:^(NSInteger actionCode, NSDictionary * _Nonnull param) {
                               kDR_LOG(@"actionCode: %ld \nparam: %@", actionCode, param);
     }];

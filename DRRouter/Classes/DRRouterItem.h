@@ -7,8 +7,6 @@
 
 #import <Foundation/Foundation.h>
 
-NS_ASSUME_NONNULL_BEGIN
-
 @interface DRRouterItem : NSObject
 
 /**
@@ -27,6 +25,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign, readonly) BOOL needLogin;
 
 /**
+ command指令中带的静态写死的参数
+ */
+@property (nonatomic, strong, readonly) NSDictionary *staticParam;
+
+/**
  构建一个路由指令
 
  @param command 指令名称
@@ -39,5 +42,3 @@ NS_ASSUME_NONNULL_BEGIN
                             needLogin:(BOOL)needLogin;
 
 @end
-
-NS_ASSUME_NONNULL_END

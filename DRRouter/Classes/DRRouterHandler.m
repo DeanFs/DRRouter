@@ -286,7 +286,7 @@
         
         NSAssert([fromVc isKindOfClass:[UIViewController class]], @"无法获取当前顶层视图控制器...");
         // 实例化目标视图控制器
-        UIViewController *toVc = [self getDestinationVcWithCalss:itme.targetPageClass command:command param:param callback:callback];
+        UIViewController *toVc = [self getDestinationVcWithItem:itme param:param callback:callback];
         // 执行页面跳转
         [self transferFromVc:fromVc
                         toVc:toVc
@@ -300,19 +300,19 @@
 }
 
 // 实例化目标视图控制器
-- (UIViewController *)getDestinationVcWithCalss:(Class)class command:(const NSString *)command param:(NSDictionary *)param callback:(DRRouterCallBackBlock)callback {
+- (UIViewController *)getDestinationVcWithItem:(DRRouterItem *)item param:(NSDictionary *)param callback:(DRRouterCallBackBlock)callback {
     UIViewController *toVc;
     if (self.defaultInitialMethod) { // 设置了默认实例化方法
         if (self.isClassMethod) {
-            if ([class respondsToSelector:self.defaultInitialMethod]) {
+            if ([item.targetPageClass respondsToSelector:self.defaultInitialMethod]) {
                 if (self.isNeedParam) {
-                    toVc = ((UIViewController* (*)(id, SEL, id))objc_msgSend)(class, self.defaultInitialMethod, param);
+                    toVc = ((UIViewController* (*)(id, SEL, id))objc_msgSend)(item.targetPageClass, self.defaultInitialMethod, param);
                 } else {
-                    toVc = ((UIViewController* (*)(id, SEL))objc_msgSend)(class, self.defaultInitialMethod);
+                    toVc = ((UIViewController* (*)(id, SEL))objc_msgSend)(item.targetPageClass, self.defaultInitialMethod);
                 }
             }
         } else {
-            id instance = [class alloc];
+            id instance = [item.targetPageClass alloc];
             if ([instance respondsToSelector:self.defaultInitialMethod]) {
                 if (self.isNeedParam) {
                     toVc = ((UIViewController* (*)(id, SEL, id))objc_msgSend)(instance, self.defaultInitialMethod, param);
@@ -324,16 +324,21 @@
     }
     if (!toVc) { // 没有设置默认实例化方法 或者 默认实例化方法未实现，实例化失败
         // 直接init
-        toVc = (UIViewController *)[[class alloc] init];
+        toVc = (UIViewController *)[[item.targetPageClass alloc] init];
     }
     if (![toVc isKindOfClass:[UIViewController class]]) {
-        NSString *message = [NSString stringWithFormat:@"指令：\"%@\"对应的类：\"%@\"不是视图控制UIViewController的子类", command, NSStringFromClass(class)];
+        NSString *message = [NSString stringWithFormat:@"指令：\"%@\"对应的类：\"%@\"不是视图控制UIViewController的子类", item.commad, NSStringFromClass(item.targetPageClass)];
         NSAssert(NO, message);
     }
     if (callback != nil) {
         [toVc yy_modelSetWithDictionary:@{@"callBackBlock": callback}];
     }
-    [toVc yy_modelSetWithDictionary:param];
+    if (item.staticParam.count > 0) {
+        [toVc yy_modelSetWithDictionary:item.staticParam];
+    }
+    if (param.count > 0) {
+        [toVc yy_modelSetWithDictionary:param];
+    }
     return toVc;
 }
 
