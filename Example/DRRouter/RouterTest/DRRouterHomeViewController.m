@@ -15,6 +15,7 @@
 #import "DRBViewController2.h"
 #import <DRMacroDefines/DRMacroDefines.h>
 #import <BlocksKit/BlocksKit.h>
+#import "DRCustomModel.h"
 
 @interface DRRouterHomeViewController ()
 
@@ -40,14 +41,15 @@
     [DRRouterHandler setupCommandScheme:SCHEME];
     
     // 设置网页链接响应控制器
-    [DRRouterHandler setupWebHandlerCalss:[DRWebViewController class]
-                          urlPropertyName:@"url"
-                        paramPropertyName:@"title"];
+    [DRRouterHandler setupWebUrlHandle:^(NSString *url, NSDictionary *param, UIViewController *fromVc, BOOL isPresent, BOOL animated, DRRouterCallBackBlock callBack) {
+        [DRWebViewController showWebWithUrl:url fromVc:fromVc param:param isPresent:isPresent animated:animated actionBlock:^{
+            kDR_SAFE_BLOCK(callBack, 0, @{@"log": @"网页页面点击了导航栏action按钮"});
+        }];
+    }];
     
     // 批量注册指令
-    [DRRouterHandler regisgerCommandsWithMap:@{A2: [DRAViewController2 class],
-                                               B1: [DRBViewController1 class]
-                                               }];
+    [DRRouterHandler registerCommand:A2 targetPgaeClass:DRAViewController2.self needLogin:NO];
+    [DRRouterHandler registerCommand:B1 targetPgaeClass:DRBViewController1.self needLogin:NO];
     
     // 指定通用实例化方法
     kDRWeakSelf
@@ -74,22 +76,21 @@
 }
 
 - (IBAction)gotoA2:(id)sender {
+    DRCustomModel *model = [DRCustomModel new];
+    model.key = @"传入自定义model";
     [DRRouterHandler handleCommand:A2
                             fromVc:self
-                         withParam:@{@"key": @"哈哈哈哈哈哈"}
-                         isPresent:NO
-                         animation:NO
-                      setupPresent:^UINavigationController *(UIViewController *toViewController) {
-                          return [[UINavigationController alloc] initWithRootViewController:toViewController];
-                      }];
+                         withParam:/*@{@"key": @"哈哈哈哈哈哈"}*/ @{@"customModel":model}
+                          callback:^(NSInteger actionCode, NSDictionary * _Nonnull param) {
+                              kDR_LOG(@"actionCode: %ld \nparam: %@", actionCode, param);
+    }];
 }
 
 - (IBAction)gotoB1:(id)sender {
     [DRRouterHandler handleCommand:B1
                             fromVc:self
                          withParam:@{@"key": @"哈哈哈哈哈哈"}
-                         isPresent:YES
-                         animation:YES
+                  presentAnimation:YES
                       setupPresent:^UINavigationController *(UIViewController *toViewController) {
                           return [[UINavigationController alloc] initWithRootViewController:toViewController];
                       }];
@@ -102,14 +103,9 @@
 
 
 - (IBAction)gotoWeb:(id)sender {
-    [DRRouterHandler handleCommand:@"http://www.baidu.com"
-                            fromVc:self
-                         withParam:@{@"key": @"xxx百度一下xxx"}
-                         isPresent:NO
-                         animation:YES
-                      setupPresent:^UINavigationController *(UIViewController *toViewController) {
-                          return [[UINavigationController alloc] initWithRootViewController:toViewController];
-                      }];
+    [DRRouterHandler handleCommand:@"http://www.baidu.com" withParam:@{@"key": @"xxx百度一下xxx"} callback:^(NSInteger actionCode, NSDictionary * _Nonnull param) {
+        kDR_LOG(@"web action: %@", param);
+    }];
 }
 
 

@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface DRAViewController2 : UIViewController
 
 // 通用实例化方法，一般在父类声明
-+ (instancetype)viewControllerWithParam:(NSDictionary *)param;
+//+ (instancetype)viewControllerWithParam:(NSDictionary *)param;
 
 @end
 

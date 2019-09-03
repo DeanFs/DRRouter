@@ -10,7 +10,10 @@
 #endif
 #endif
 
+#import "DRRouter.h"
 #import "DRRouterHandler.h"
+#import "DRRouterHandlerOpen.h"
+#import "DRRouterItem.h"
 
 FOUNDATION_EXPORT double DRRouterVersionNumber;
 FOUNDATION_EXPORT const unsigned char DRRouterVersionString[];

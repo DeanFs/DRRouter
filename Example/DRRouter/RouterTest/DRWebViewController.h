@@ -13,8 +13,14 @@ NS_ASSUME_NONNULL_BEGIN
 @interface DRWebViewController : UIViewController
 
 @property (nonatomic, copy) NSString *url;
+@property (nonatomic, strong) NSDictionary *param;
 
-+ (void)showWebWithUrl:(NSString *)url fromVc:(UIViewController *)vc;
++ (void)showWebWithUrl:(NSString *)url
+                fromVc:(UIViewController *)vc
+                 param:(NSDictionary *)param
+             isPresent:(BOOL)isPresent
+              animated:(BOOL)animated
+           actionBlock:(dispatch_block_t)actionBlock;
 
 @end
 

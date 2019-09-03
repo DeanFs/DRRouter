@@ -21,7 +21,11 @@
 
 @implementation DRAViewController1
 
-REGISTER_ROUTER_DOMMAND(A1)
++ (void)load {
+    [super load];
+    
+    [DRRouterHandler registerCommand:A1 targetPgaeClass:[self class] needLogin:NO];
+}
 
 + (void)openFromViewController:(UIViewController *)viewController withParam:(id)param callback:(DRRouterCallBackBlock)callback {
     DRAViewController1 *a1 = [[DRAViewController1 alloc] init];

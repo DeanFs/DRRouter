@@ -23,6 +23,7 @@
 		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
 		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
+		FE84F777231E0A4400088343 /* DRCustomModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FE84F776231E0A4400088343 /* DRCustomModel.m */; };
 		FEB9AC2922DEB9D700B91032 /* DRRouterCommandList.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9AC1622DEB9D700B91032 /* DRRouterCommandList.m */; };
 		FEB9AC2A22DEB9D700B91032 /* DRWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9AC1822DEB9D700B91032 /* DRWebViewController.m */; };
 		FEB9AC2B22DEB9D700B91032 /* DRBViewController1.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9AC1A22DEB9D700B91032 /* DRBViewController1.m */; };
@@ -75,6 +76,8 @@
 		A1ECFA0BC76D41ECCABC5A81 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		B1FBD0EB9654FBF4343C9800 /* DRRouter.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = DRRouter.podspec; path = ../DRRouter.podspec; sourceTree = "<group>"; };
 		E46278A0B4EC71170F1D736A /* Pods-DRRouter_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DRRouter_Example.release.xcconfig"; path = "Target Support Files/Pods-DRRouter_Example/Pods-DRRouter_Example.release.xcconfig"; sourceTree = "<group>"; };
+		FE84F775231E0A4400088343 /* DRCustomModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRCustomModel.h; sourceTree = "<group>"; };
+		FE84F776231E0A4400088343 /* DRCustomModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRCustomModel.m; sourceTree = "<group>"; };
 		FEB9AC1522DEB9D700B91032 /* DRRouterCommandList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DRRouterCommandList.h; sourceTree = "<group>"; };
 		FEB9AC1622DEB9D700B91032 /* DRRouterCommandList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DRRouterCommandList.m; sourceTree = "<group>"; };
 		FEB9AC1722DEB9D700B91032 /* DRRouterHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DRRouterHomeViewController.h; sourceTree = "<group>"; };
@@ -260,12 +263,14 @@
 		FEB9AC2122DEB9D700B91032 /* AModule */ = {
 			isa = PBXGroup;
 			children = (
-				FEB9AC2222DEB9D700B91032 /* DRAViewController2.h */,
 				FEB9AC2322DEB9D700B91032 /* DRAViewController1.h */,
-				FEB9AC2422DEB9D700B91032 /* DRAViewController2.m */,
-				FEB9AC2522DEB9D700B91032 /* DRAViewController1.xib */,
-				FEB9AC2622DEB9D700B91032 /* DRAViewController2.xib */,
 				FEB9AC2722DEB9D700B91032 /* DRAViewController1.m */,
+				FEB9AC2522DEB9D700B91032 /* DRAViewController1.xib */,
+				FEB9AC2222DEB9D700B91032 /* DRAViewController2.h */,
+				FEB9AC2422DEB9D700B91032 /* DRAViewController2.m */,
+				FEB9AC2622DEB9D700B91032 /* DRAViewController2.xib */,
+				FE84F775231E0A4400088343 /* DRCustomModel.h */,
+				FE84F776231E0A4400088343 /* DRCustomModel.m */,
 			);
 			path = AModule;
 			sourceTree = "<group>";
@@ -430,12 +435,14 @@
 				"${BUILT_PRODUCTS_DIR}/BlocksKit/BlocksKit.framework",
 				"${BUILT_PRODUCTS_DIR}/DRRouter/DRRouter.framework",
 				"${BUILT_PRODUCTS_DIR}/MJExtension/MJExtension.framework",
+				"${BUILT_PRODUCTS_DIR}/YYModel/YYModel.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BlocksKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DRRouter.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MJExtension.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YYModel.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -457,6 +464,7 @@
 				FEB9AC2C22DEB9D700B91032 /* DRBViewController2.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
 				FEB9AC3322DEB9D700B91032 /* DRRouterHomeViewController.m in Sources */,
+				FE84F777231E0A4400088343 /* DRCustomModel.m in Sources */,
 				FEB9AC2F22DEB9D700B91032 /* DRAViewController2.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

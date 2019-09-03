@@ -10,6 +10,10 @@
 
 @interface DRBViewController1 ()
 
+@property (weak, nonatomic) IBOutlet UILabel *paramLabel;
+
+@property (nonatomic, copy) NSString *key;
+
 @end
 
 @implementation DRBViewController1
@@ -19,6 +23,8 @@
     // Do any additional setup after loading the view from its nib.
     
     self.title = NSStringFromClass([self class]);
+    
+    self.paramLabel.text = self.key;
 }
 
 - (IBAction)goBack:(id)sender {

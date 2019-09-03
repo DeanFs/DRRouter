@@ -7,26 +7,29 @@
 //
 
 #import "DRRouterHandler.h"
-#import "DRMacroDefines.h"
+#import <DRMacroDefines/DRMacroDefines.h>
 #import <objc/runtime.h>
 #import <objc/message.h>
-
-#define kWebCmd @"gotoWebView"
+#import <YYModel/YYModel.h>
+#import "DRRouterItem.h"
 
 @interface DRRouterHandler ()
 
-@property (nonatomic, strong) NSMutableDictionary<const NSString *, Class> *cmdCalssMap;
+@property (nonatomic, strong) NSMutableDictionary<const NSString *, DRRouterItem *> *cmdsMap;
 @property (nonatomic, copy) const NSString *cmdScheme;
 
 // 默认实例方法
 @property (nonatomic, assign) SEL defaultInitialMethod;
 @property (nonatomic, assign) BOOL isClassMethod;
 @property (nonatomic, assign) BOOL isNeedParam;
-@property (nonatomic, copy) DRRouterGetTopViewControllerBlock getTopVcBlock;
+@property (nonatomic, copy) UIViewController * (^getTopVcBlock)(void);
 
-// web需要参数
-@property (nonatomic, copy) NSString *urlPropertyName;
-@property (nonatomic, copy) NSString *paramPropertyName;
+// web跳转响应
+@property (nonatomic, copy) void (^webUrlHandler)(NSString *url, NSDictionary *param, UIViewController *fromVc, BOOL isPresent, BOOL animated, DRRouterCallBackBlock callBack);
+
+// 用户登录响应
+@property (nonatomic, copy) BOOL (^loginStatusBlock)(void);
+@property (nonatomic, copy) void (^loginHandler)(dispatch_block_t continueRouterBlock);
 
 @end
 
@@ -44,23 +47,9 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        self.cmdCalssMap = [NSMutableDictionary dictionary];
+        self.cmdsMap = [NSMutableDictionary dictionary];
     }
     return self;
-}
-
-#pragma mark - 注册指令
-/**
- 注册指令
- 请在可以通过路由打开的页面中通过REGISTER_ROUTER_DOMMAND实现注册，不建议直接调用该方法
- viewControllerA->viewControllerB，则在B中调用REGISTER_ROUTER_DOMMAND(gotoB_command)
- 
- @param cmd 指令字符串
- @param viewControllerClass 对应类名
- */
-+ (void)registerCommand:(const NSString *)cmd
-                vcClass:(Class)viewControllerClass {
-    [DRRouterHandler router].cmdCalssMap[cmd] = viewControllerClass;
 }
 
 #pragma mark - 一些初始化设置
@@ -76,32 +65,24 @@
 }
 
 /**
- 批量注册指令映射表
+ 单个注册指令
+ 请在可以通过路由打开的页面中通过REGISTER_ROUTER_DOMMAND实现注册，不建议直接调用该方法
+ viewControllerA->viewControllerB，则在B中调用REGISTER_ROUTER_DOMMAND(gotoB_command)
  
- @param commandsMap 指令映射表，key为指令，value(Class类型)为对应viewController Class
+ @param cmd 指令字符串
+ @param targetPageClass 对应类名
  */
-+ (void)regisgerCommandsWithMap:(NSDictionary<const NSString *, Class> *)commandsMap {
-    [[DRRouterHandler router].cmdCalssMap addEntriesFromDictionary:commandsMap];
-}
-
-/**
- 设置响应网页跳转的viewController
- 
- @param webHandlerClass 一般是加载网页的viewController
- @param urlKey url属性名
- @param paramKey 其他参数属性名
- */
-+ (void)setupWebHandlerCalss:(Class)webHandlerClass
-             urlPropertyName:(NSString *)urlKey
-           paramPropertyName:(NSString *)paramKey {
-    DRRouterHandler *router = [DRRouterHandler router];
-    router.cmdCalssMap[kWebCmd] = webHandlerClass;
-    router.urlPropertyName = urlKey;
-    router.paramPropertyName = paramKey;
++ (void)registerCommand:(const NSString *)cmd
+        targetPgaeClass:(Class)targetPageClass
+              needLogin:(BOOL)needLogin {
+    [DRRouterHandler router].cmdsMap[cmd] = [DRRouterItem routerItemWithCommand:cmd
+                                                                targetPageClass:targetPageClass
+                                                                      needLogin:needLogin];
 }
 
 /**
  设置统一的页面实例化方法，在路由目标页没有实现open方法的情况下调用传入的initialMethod
+ >>>>>>注：可选实现
  
  @param initialMethod 目标页面实例化方法
  @param isClassMethod 是否是类方法
@@ -111,7 +92,7 @@
 + (void)setupDefaultInitialMethod:(SEL)initialMethod
                     isClassMethod:(BOOL)isClassMethod
                       isNeedParam:(BOOL)isNeedParam
-                topViewController:(DRRouterGetTopViewControllerBlock)getTopViewControllerBlock {
+                topViewController:(UIViewController *(^)(void))getTopViewControllerBlock {
     DRRouterHandler *router = [DRRouterHandler router];
     router.defaultInitialMethod = initialMethod;
     router.isClassMethod = isClassMethod;
@@ -119,10 +100,32 @@
     router.getTopVcBlock = getTopViewControllerBlock;
 }
 
+/**
+ 设置网页跳转的响应回调
+ >>>>>>注：如果有网页跳转则必须调用该方法
+ 
+ @param handle 当发现出入的指令为http网页链接时，会调用该回调执行页面跳转
+ */
++ (void)setupWebUrlHandle:(void(^)(NSString *url, NSDictionary *param, UIViewController *fromVc, BOOL isPresent, BOOL animated, DRRouterCallBackBlock callBack))handle {
+    [DRRouterHandler router].webUrlHandler = handle;
+}
+
+/**
+ 设置用户登录的响应会次奥
+ 
+ @param handle 当目标页面需要用户登录，切用户未登录时调用
+ 用户登录完成后，若调用continueRouterBlock，则会继续完成之前的将要执行的路由跳转
+ @param loginStatusBlock 获取当前用户登录状态的回调
+ */
++ (void)setupUserLoginHandle:(void (^)(dispatch_block_t continueRouterBlock))handle
+            loginStatusBlock:(BOOL(^)(void))loginStatusBlock {
+    [DRRouterHandler router].loginHandler = handle;
+    [DRRouterHandler router].loginStatusBlock = loginStatusBlock;
+}
+
 #pragma mark - 发起路由跳转，以下方式选一种
 /**
- 发送路由指令
- 没有实现openXXX协议方法时，使用Push方式弹出新页面
+ 发送路由指令，使用Push方式弹出新页面
  
  @param command 路由指令
  @param param 传入下一页面的参数
@@ -141,8 +144,7 @@
 }
 
 /**
- 发送路由指令
- 没有实现openXXX协议方法时，使用Push方式弹出新页面
+ 发送路由指令，使用Push方式弹出新页面
  
  @param command 路由指令
  @param viewController 当前发送路由指令的界面
@@ -163,25 +165,23 @@
 }
 
 /**
- 发送路由指令
- 适用于目标页面没有实现openXXX协议方法，且希望页面弹出时没有动画，或者使用模态呼出页面的情景
+ 发送路由指令，使用Present(模态)方式弹出新页面
  
  @param command 路由指令
  @param viewController 当前发送路由指令的界面
  @param param 传入下一页面的参数
  @param animation 是否适用转场动画
- @param setupPresentBlock 是否适用模态
+ @param setupPresentBlock 对目标页面进行额外设置，如添加导航控制器
  */
 + (void)handleCommand:(const NSString *)command
                fromVc:(UIViewController *)viewController
             withParam:(NSDictionary *)param
-            isPresent:(BOOL)isPresent
-            animation:(BOOL)animation
-         setupPresent:(DRSetupPresentBlock)setupPresentBlock {
+     presentAnimation:(BOOL)animation
+         setupPresent:(UIViewController *(^)(UIViewController *toViewController))setupPresentBlock {
     [DRRouterHandler handleCommand:command
                             fromVc:viewController
                          withParam:param
-                         isPresent:isPresent
+                         isPresent:YES
                          animation:animation
                           callback:nil
                       setupPresent:setupPresentBlock];
@@ -195,7 +195,7 @@
             isPresent:(BOOL)isPresent
             animation:(BOOL)animation
              callback:(DRRouterCallBackBlock)callback
-         setupPresent:(DRSetupPresentBlock)setupPresentBlock {
+         setupPresent:(UIViewController *(^)(UIViewController *toViewController))setupPresentBlock {
     DRRouterHandler *router = [DRRouterHandler router];
     
     // 获取顶层视图控制器
@@ -203,7 +203,6 @@
     if (!fromVc) {
         fromVc = kDR_SAFE_BLOCK(router.getTopVcBlock);
     }
-    
     NSAssert(router.cmdScheme.length, @"未设置命令协议头，请调用+setupCommandScheme:进行设置");
     
     // 处理自定义的指令集
@@ -220,17 +219,15 @@
     
     // http，https使用web打开
     if ([command hasPrefix:@"http://"] || [command hasPrefix:@"https://"]) {
-        [router webTransferFromVc:fromVc
-                      withCommand:command
-                            param:param
-                        isPresent:isPresent
-                        animation:animation
-                     setupPresent:setupPresentBlock];
+        kDR_SAFE_BLOCK(router.webUrlHandler, (NSString *)command, param, fromVc, isPresent, animation, callback);
         return;
     }
     
     // 其他指令视为跳转第三方应用
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@", command]];
+    NSURL *url;
+    if (command.length) {
+        url = [NSURL URLWithString:[NSString stringWithFormat:@"%@", command]];
+    }
     if (!url) {
         NSString *message = [NSString stringWithFormat:@"不能识别的指令: \"%@\"", command];
         NSAssert(NO, message);
@@ -245,25 +242,39 @@
           isPresent:(BOOL)isPresent
           animation:(BOOL)animation
            callback:(DRRouterCallBackBlock)callback
-       setupPresent:(DRSetupPresentBlock)setupPresentBlock {
-    Class class = self.cmdCalssMap[command];
-    if (class) {
-        if ([fromVc isKindOfClass:class]) { // 避免重复叠加同一个页面
+       setupPresent:(UIViewController *(^)(UIViewController *toViewController))setupPresentBlock {
+    DRRouterItem *itme = self.cmdsMap[command];
+    if (itme.needLogin) {
+        if (self.loginStatusBlock != nil && self.loginHandler != nil) {
+            if (!self.loginStatusBlock()) {
+                kDRWeakSelf
+                self.loginHandler(^{
+                    [weakSelf sendCommand:command withVc:fromVc param:param isPresent:isPresent animation:animation callback:callback setupPresent:setupPresentBlock];
+                });
+                return;
+            }
+        } else {
+            NSString *message = [NSString stringWithFormat:@"响应指令: \"%@\"需要用户登录，请通过setupUserLoginHandle:loginStatusBlock:方法设置用户登录回调", command];
+            NSAssert(NO, message);
+        }
+    }
+    if (itme.targetPageClass) {
+        if ([fromVc isKindOfClass:itme.targetPageClass]) { // 避免重复叠加同一个页面
             return;
         }
         // 实现了协议方法的跳转
-        if ([class respondsToSelector:@selector(openWithParam:callback:)]) {
-            ((void (*)(id, SEL, id, DRRouterCallBackBlock))objc_msgSend)(class, @selector(openWithParam:callback:), param, callback);
+        if ([itme.targetPageClass respondsToSelector:@selector(openWithParam:callback:)]) {
+            ((void (*)(id, SEL, id, DRRouterCallBackBlock))objc_msgSend)(itme.targetPageClass, @selector(openWithParam:callback:), param, callback);
             return;
         }
-        if ([class respondsToSelector:@selector(openFromViewController:withParam:callback:)]) {
-            ((void (*)(id, SEL, UIViewController*, id, DRRouterCallBackBlock))objc_msgSend)(class, @selector(openFromViewController:withParam:callback:), fromVc, param, callback);
+        if ([itme.targetPageClass respondsToSelector:@selector(openFromViewController:withParam:callback:)]) {
+            ((void (*)(id, SEL, UIViewController*, id, DRRouterCallBackBlock))objc_msgSend)(itme.targetPageClass, @selector(openFromViewController:withParam:callback:), fromVc, param, callback);
             return;
         }
         
         NSAssert([fromVc isKindOfClass:[UIViewController class]], @"无法获取当前顶层视图控制器...");
         // 实例化目标视图控制器
-        UIViewController *toVc = [self getDestinationVcWithCalss:class command:command param:param];
+        UIViewController *toVc = [self getDestinationVcWithCalss:itme.targetPageClass command:command param:param callback:callback];
         // 执行页面跳转
         [self transferFromVc:fromVc
                         toVc:toVc
@@ -276,37 +287,8 @@
     NSAssert(NO, message);
 }
 
-- (void)webTransferFromVc:(UIViewController *)fromVc
-              withCommand:(const NSString *)command
-                    param:(NSDictionary *)param
-                isPresent:(BOOL)isPresent
-                animation:(BOOL)animation
-             setupPresent:(DRSetupPresentBlock)setupPresentBlock {
-    Class webVcClass = self.cmdCalssMap[kWebCmd];
-    if (webVcClass) {
-        if ([fromVc isKindOfClass:webVcClass]) { // 避免重复叠加同一个页面
-            return;
-        }
-        NSAssert(self.urlPropertyName.length, @"未指定webView的url属性名");
-        NSAssert([fromVc isKindOfClass:[UIViewController class]], @"无法获取当前顶层视图控制器...");
-        
-        UIViewController *webVc = [self getDestinationVcWithCalss:webVcClass command:command param:param];
-        [webVc setValue:command forKey:self.urlPropertyName];
-        if (self.paramPropertyName) {
-            [webVc setValue:param forKey:self.paramPropertyName];
-        }
-        [self transferFromVc:fromVc
-                        toVc:webVc
-                   isPresent:isPresent
-                   animation:animation
-                setupPresent:setupPresentBlock];
-        return;
-    }
-    NSAssert(NO, @"未注册响应网页跳转的视图控制器");
-}
-
 // 实例化目标视图控制器
-- (UIViewController *)getDestinationVcWithCalss:(Class)class command:(const NSString *)command param:(NSDictionary *)param {
+- (UIViewController *)getDestinationVcWithCalss:(Class)class command:(const NSString *)command param:(NSDictionary *)param callback:(DRRouterCallBackBlock)callback {
     UIViewController *toVc;
     if (self.defaultInitialMethod) { // 设置了默认实例化方法
         if (self.isClassMethod) {
@@ -336,7 +318,10 @@
         NSString *message = [NSString stringWithFormat:@"指令：\"%@\"对应的类：\"%@\"不是视图控制UIViewController的子类", command, NSStringFromClass(class)];
         NSAssert(NO, message);
     }
-    
+    if (callback != nil) {
+        [toVc yy_modelSetWithDictionary:@{@"callBackBlock": callback}];
+    }
+    [toVc yy_modelSetWithDictionary:param];
     return toVc;
 }
 
@@ -345,10 +330,10 @@
                   toVc:(UIViewController *)toVc
              isPresent:(BOOL)isPresent
              animation:(BOOL)animation
-          setupPresent:(DRSetupPresentBlock)setupPresentBlock {
+          setupPresent:(UIViewController *(^)(UIViewController *toViewController))setupPresentBlock {
     if (!fromVc.navigationController || isPresent) {
-        if (setupPresentBlock) {
-            UINavigationController *nav = setupPresentBlock(toVc);
+        if (setupPresentBlock != nil) {
+            UIViewController *nav = setupPresentBlock(toVc);
             [fromVc presentViewController:nav animated:animation completion:nil];
         } else {
             [fromVc presentViewController:toVc animated:animation completion:nil];

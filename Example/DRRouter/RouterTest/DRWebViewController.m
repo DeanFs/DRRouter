@@ -9,22 +9,32 @@
 #import "DRWebViewController.h"
 #import <WebKit/WebKit.h>
 #import <MJExtension/MJExtension.h>
+#import <DRMacroDefines/DRMacroDefines.h>
 
 @interface DRWebViewController () <WKNavigationDelegate, WKUIDelegate>
 
 @property (nonatomic, strong) WKWebView *webView;
+@property (nonatomic, copy) dispatch_block_t actionBlock;
 
 @end
 
 @implementation DRWebViewController
 
-+ (void)showWebWithUrl:(NSString *)url fromVc:(UIViewController *)vc {
++ (void)showWebWithUrl:(NSString *)url
+                fromVc:(UIViewController *)vc
+                 param:(NSDictionary *)param
+             isPresent:(BOOL)isPresent
+              animated:(BOOL)animated
+           actionBlock:(dispatch_block_t)actionBlock {
     DRWebViewController *webVc = [[DRWebViewController alloc] init];
     webVc.url = url;
-    if (vc.navigationController) {
-        [vc.navigationController pushViewController:webVc animated:YES];
+    webVc.param = param;
+    webVc.actionBlock = actionBlock;
+    if (isPresent || vc.navigationController == nil) {
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:webVc];
+        [vc presentViewController:nav animated:animated completion:nil];
     } else {
-        [vc presentViewController:webVc animated:YES completion:nil];
+        [vc.navigationController pushViewController:webVc animated:animated];
     }
 }
 
@@ -32,10 +42,16 @@
     [super viewDidLoad];
 
     if (!self.title.length) {
-        self.title = @"网页连接";
+        self.title = self.param[@"key"];
     }
     [self.view addSubview:self.webView];    
     [self.webView loadRequest:[NSURLRequest requestWithURL:self.url.mj_url]];
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"action" style:UIBarButtonItemStylePlain target:self action:@selector(onActionTap)];
+}
+
+- (void)onActionTap {
+    kDR_SAFE_BLOCK(self.actionBlock);
 }
 
 #pragma mark - lazy load

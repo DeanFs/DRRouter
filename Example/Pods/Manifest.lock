@@ -15,9 +15,11 @@ PODS:
     - BlocksKit/Core
     - BlocksKit/DynamicDelegate
   - DRMacroDefines (0.1.2)
-  - DRRouter (0.1.0):
+  - DRRouter (0.1.1):
     - DRMacroDefines
+    - YYModel
   - MJExtension (3.1.0)
+  - YYModel (1.0.4)
 
 DEPENDENCIES:
   - BlocksKit
@@ -29,6 +31,7 @@ SPEC REPOS:
     - BlocksKit
     - DRMacroDefines
     - MJExtension
+    - YYModel
 
 EXTERNAL SOURCES:
   DRRouter:
@@ -37,9 +40,10 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   BlocksKit: 7f422b971407001178d181a43b99014ea2591fe6
   DRMacroDefines: 58aa271bc1c4170fa09f4f33dcad18fc4f21a57e
-  DRRouter: a38a1291c4439ef7c9761136a593095275aaff86
+  DRRouter: 0a7979a292258a0f9486f00078478376199ebf0d
   MJExtension: 6b69b3bef2864fd550ce1a184eda219e321209d2
+  YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
 PODFILE CHECKSUM: 8e14aa6ff3adbb9307dd849a5def7e400b442ab7
 
-COCOAPODS: 1.6.1
+COCOAPODS: 1.7.5
