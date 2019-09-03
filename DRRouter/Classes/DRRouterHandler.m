@@ -330,14 +330,18 @@
         NSString *message = [NSString stringWithFormat:@"指令：\"%@\"对应的类：\"%@\"不是视图控制UIViewController的子类", item.commad, NSStringFromClass(item.targetPageClass)];
         NSAssert(NO, message);
     }
+    NSMutableDictionary *allParam = [NSMutableDictionary dictionary];
     if (callback != nil) {
-        [toVc yy_modelSetWithDictionary:@{@"callBackBlock": callback}];
+        [allParam setObject:callback forKey:@"callBackBlock"];
     }
     if (item.staticParam.count > 0) {
-        [toVc yy_modelSetWithDictionary:item.staticParam];
+        [allParam setValuesForKeysWithDictionary:item.staticParam];
     }
     if (param.count > 0) {
-        [toVc yy_modelSetWithDictionary:param];
+        [allParam setValuesForKeysWithDictionary:param];
+    }
+    if (allParam.count > 0) {
+        [toVc yy_modelSetWithDictionary:allParam];
     }
     return toVc;
 }
