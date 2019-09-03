@@ -59,12 +59,14 @@
 /**
  设置用户登录的响应会次奥
 
+ @param loginCommand 登录的路由指令名
  @param handle 当目标页面需要用户登录，切用户未登录时调用
                用户登录完成后，若调用continueRouterBlock，则会继续完成之前的将要执行的路由跳转
  @param loginStatusBlock 获取当前用户登录状态的回调
  */
-+ (void)setupUserLoginHandle:(void (^)(const NSString *command, dispatch_block_t continueRouterBlock))handle
-            loginStatusBlock:(BOOL(^)(void))loginStatusBlock;
++ (void)setupUserLoginCommand:(const NSString *)loginCommand
+                       handle:(void (^)(const NSString *command, NSDictionary *param, DRRouterCallBackBlock callBack, dispatch_block_t continueRouterBlock))handle
+             loginStatusBlock:(BOOL(^)(void))loginStatusBlock;
 
 #pragma mark - 发起路由跳转，以下方式选一种
 /**

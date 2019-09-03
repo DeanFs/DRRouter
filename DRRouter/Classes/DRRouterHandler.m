@@ -17,6 +17,7 @@
 
 @property (nonatomic, strong) NSMutableDictionary<const NSString *, DRRouterItem *> *cmdsMap;
 @property (nonatomic, copy) const NSString *cmdScheme;
+@property (nonatomic, copy) const NSString *loginCommand;
 
 // 默认实例方法
 @property (nonatomic, assign) SEL defaultInitialMethod;
@@ -29,7 +30,7 @@
 
 // 用户登录响应
 @property (nonatomic, copy) BOOL (^loginStatusBlock)(void);
-@property (nonatomic, copy) void (^loginHandler)(const NSString *command, dispatch_block_t continueRouterBlock);
+@property (nonatomic, copy) void (^loginHandler)(const NSString *command, NSDictionary *param, DRRouterCallBackBlock callBack, dispatch_block_t continueRouterBlock);
 
 @end
 
@@ -113,12 +114,15 @@
 /**
  设置用户登录的响应会次奥
  
+ @param loginCommand 登录的路由指令名
  @param handle 当目标页面需要用户登录，切用户未登录时调用
  用户登录完成后，若调用continueRouterBlock，则会继续完成之前的将要执行的路由跳转
  @param loginStatusBlock 获取当前用户登录状态的回调
  */
-+ (void)setupUserLoginHandle:(void (^)(const NSString *command, dispatch_block_t continueRouterBlock))handle
-            loginStatusBlock:(BOOL(^)(void))loginStatusBlock {
++ (void)setupUserLoginCommand:(const NSString *)loginCommand
+                       handle:(void (^)(const NSString *command, NSDictionary *param, DRRouterCallBackBlock callBack, dispatch_block_t continueRouterBlock))handle
+             loginStatusBlock:(BOOL(^)(void))loginStatusBlock {
+    [DRRouterHandler router].loginCommand = loginCommand;
     [DRRouterHandler router].loginHandler = handle;
     [DRRouterHandler router].loginStatusBlock = loginStatusBlock;
 }
@@ -197,6 +201,14 @@
              callback:(DRRouterCallBackBlock)callback
          setupPresent:(UIViewController *(^)(UIViewController *toViewController))setupPresentBlock {
     DRRouterHandler *router = [DRRouterHandler router];
+    if ([router.loginCommand isEqualToString:(NSString *)command]) {
+        if (router.loginHandler == nil) {
+            NSString *message = [NSString stringWithFormat:@"响应指令: \"%@\"需要用户登录，请通过setupUserLoginCommand:...方法设置用户登录回调", command];
+            NSAssert(NO, message);
+        }
+        router.loginHandler(command, param, callback, nil);
+        return;
+    }
     
     // 获取顶层视图控制器
     UIViewController *fromVc = viewController;
@@ -248,13 +260,13 @@
         if (self.loginStatusBlock != nil && self.loginHandler != nil) {
             if (!self.loginStatusBlock()) {
                 kDRWeakSelf
-                self.loginHandler(command, ^{
+                self.loginHandler(command, nil, nil, ^{
                     [weakSelf sendCommand:command withVc:fromVc param:param isPresent:isPresent animation:animation callback:callback setupPresent:setupPresentBlock];
                 });
                 return;
             }
         } else {
-            NSString *message = [NSString stringWithFormat:@"响应指令: \"%@\"需要用户登录，请通过setupUserLoginHandle:loginStatusBlock:方法设置用户登录回调", command];
+            NSString *message = [NSString stringWithFormat:@"响应指令: \"%@\"需要用户登录，请通过setupUserLoginCommand:...方法设置用户登录回调", command];
             NSAssert(NO, message);
         }
     }
