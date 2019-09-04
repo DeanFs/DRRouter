@@ -76,7 +76,7 @@
  @param param 传入下一页面的参数
  @param callback 传入下一页面的回调，需要被打开页面实现openXXX协议方法接收callback回调
  */
-+ (void)handleCommand:(const NSString *)command
++ (BOOL)handleCommand:(const NSString *)command
             withParam:(NSDictionary *)param
              callback:(DRRouterCallBackBlock)callback;
 
@@ -88,7 +88,7 @@
  @param param 传入下一页面的参数
  @param callback 传入下一页面的回调，需要被打开页面实现openXXX协议方法接收callback回调
  */
-+ (void)handleCommand:(const NSString *)command
++ (BOOL)handleCommand:(const NSString *)command
                fromVc:(UIViewController *)viewController
             withParam:(NSDictionary *)param
              callback:(DRRouterCallBackBlock)callback;
@@ -102,7 +102,7 @@
  @param animation 是否适用转场动画
  @param setupPresentBlock 对目标页面进行额外设置，如添加导航控制器
  */
-+ (void)handleCommand:(const NSString *)command
++ (BOOL)handleCommand:(const NSString *)command
                fromVc:(UIViewController *)viewController
             withParam:(NSDictionary *)param
      presentAnimation:(BOOL)animation

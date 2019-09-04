@@ -135,16 +135,16 @@
  @param param 传入下一页面的参数
  @param callback 传入下一页面的回调，需要被打开页面实现openXXX协议方法接收callback回调
  */
-+ (void)handleCommand:(const NSString *)command
++ (BOOL)handleCommand:(const NSString *)command
             withParam:(NSDictionary *)param
              callback:(DRRouterCallBackBlock)callback {
-    [DRRouterHandler handleCommand:command
-                            fromVc:nil
-                         withParam:param
-                         isPresent:NO
-                         animation:YES
-                          callback:callback
-                      setupPresent:nil];
+    return [DRRouterHandler handleCommand:command
+                                   fromVc:nil
+                                withParam:param
+                                isPresent:NO
+                                animation:YES
+                                 callback:callback
+                             setupPresent:nil];
 }
 
 /**
@@ -155,17 +155,17 @@
  @param param 传入下一页面的参数
  @param callback 传入下一页面的回调，需要被打开页面实现openXXX协议方法接收callback回调
  */
-+ (void)handleCommand:(const NSString *)command
++ (BOOL)handleCommand:(const NSString *)command
                fromVc:(UIViewController *)viewController
             withParam:(NSDictionary *)param
              callback:(DRRouterCallBackBlock)callback {
-    [DRRouterHandler handleCommand:command
-                            fromVc:viewController
-                         withParam:param
-                         isPresent:NO
-                         animation:YES
-                          callback:callback
-                      setupPresent:nil];
+    return [DRRouterHandler handleCommand:command
+                                   fromVc:viewController
+                                withParam:param
+                                isPresent:NO
+                                animation:YES
+                                 callback:callback
+                             setupPresent:nil];
 }
 
 /**
@@ -177,23 +177,23 @@
  @param animation 是否适用转场动画
  @param setupPresentBlock 对目标页面进行额外设置，如添加导航控制器
  */
-+ (void)handleCommand:(const NSString *)command
++ (BOOL)handleCommand:(const NSString *)command
                fromVc:(UIViewController *)viewController
             withParam:(NSDictionary *)param
      presentAnimation:(BOOL)animation
          setupPresent:(UIViewController *(^)(UIViewController *toViewController))setupPresentBlock {
-    [DRRouterHandler handleCommand:command
-                            fromVc:viewController
-                         withParam:param
-                         isPresent:YES
-                         animation:animation
-                          callback:nil
-                      setupPresent:setupPresentBlock];
+    return [DRRouterHandler handleCommand:command
+                                   fromVc:viewController
+                                withParam:param
+                                isPresent:YES
+                                animation:animation
+                                 callback:nil
+                             setupPresent:setupPresentBlock];
 }
 
 #pragma mark - private
 // 路由解析
-+ (void)handleCommand:(const NSString *)command
++ (BOOL)handleCommand:(const NSString *)command
                fromVc:(UIViewController *)viewController
             withParam:(NSDictionary *)param
             isPresent:(BOOL)isPresent
@@ -201,7 +201,7 @@
              callback:(DRRouterCallBackBlock)callback
          setupPresent:(UIViewController *(^)(UIViewController *toViewController))setupPresentBlock {
     if (command.length == 0) {
-        return;
+        return NO;
     }
     DRRouterHandler *router = [DRRouterHandler router];
     if ([router.loginCommand isEqualToString:(NSString *)command]) {
@@ -210,7 +210,7 @@
             NSAssert(NO, message);
         }
         router.loginHandler(command, param, callback, nil);
-        return;
+        return YES;
     }
     
     // 获取顶层视图控制器
@@ -229,13 +229,16 @@
                   animation:animation
                    callback:callback
                setupPresent:setupPresentBlock];
-        return;
+        return YES;
     }
     
     // http，https使用web打开
     if ([command hasPrefix:@"http://"] || [command hasPrefix:@"https://"]) {
+        if (router.webUrlHandler == nil) {
+            NSAssert(router.cmdScheme.length, @"未设置网页跳转响应，请调用setupWebUrlHandle:进行设置");
+        }
         kDR_SAFE_BLOCK(router.webUrlHandler, (NSString *)command, param, fromVc, isPresent, animation, callback);
-        return;
+        return YES;
     }
     
     // 其他指令视为跳转第三方应用
@@ -247,7 +250,7 @@
         NSString *message = [NSString stringWithFormat:@"不能识别的指令: \"%@\"", command];
         NSAssert(NO, message);
     }
-    [[UIApplication sharedApplication] openURL:url];
+    return [[UIApplication sharedApplication] openURL:url];
 }
 
 // 执行自定义指令的路由跳转
