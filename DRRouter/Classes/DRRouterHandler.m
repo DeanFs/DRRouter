@@ -62,7 +62,7 @@
  @param scheme 指令协议头
  */
 + (void)setupCommandScheme:(const NSString *)scheme {
-    [DRRouterHandler router].cmdScheme = scheme;
+    [DRRouterHandler router].cmdScheme = [scheme lowercaseString];
 }
 
 /**
@@ -204,24 +204,40 @@
         return NO;
     }
     DRRouterHandler *router = [DRRouterHandler router];
-    if ([router.loginCommand isEqualToString:(NSString *)command]) {
-        if (router.loginHandler == nil) {
-            NSString *message = [NSString stringWithFormat:@"响应指令: \"%@\"需要用户登录，请通过setupUserLoginCommand:...方法设置用户登录回调", command];
-            NSAssert(NO, message);
-        }
-        router.loginHandler(command, param, callback, nil);
-        return YES;
-    }
     
     // 获取顶层视图控制器
     UIViewController *fromVc = viewController;
     if (!fromVc) {
+        if (router.getTopVcBlock == nil) {
+            NSAssert(NO, @"无法获取当前顶层视图控制器，请通过setupDefaultInitialMethod:..topViewController:设置获取顶层控制的回调");
+            return NO;
+        }
         fromVc = kDR_SAFE_BLOCK(router.getTopVcBlock);
+    }
+    
+    // http，https使用web打开
+    NSString *prefix = [[command componentsSeparatedByString:@"://"].firstObject lowercaseString];
+    if ([prefix isEqualToString:@"http"] || [prefix isEqualToString:@"https"]) {
+        if (router.webUrlHandler == nil) {
+            NSAssert(router.cmdScheme.length, @"未设置网页跳转响应，请调用setupWebUrlHandle:进行设置");
+        }
+        kDR_SAFE_BLOCK(router.webUrlHandler, (NSString *)command, param, fromVc, isPresent, animation, callback);
+        return YES;
     }
     NSAssert(router.cmdScheme.length, @"未设置命令协议头，请调用+setupCommandScheme:进行设置");
     
     // 处理自定义的指令集
-    if ([command hasPrefix:(NSString *)router.cmdScheme]) {
+    if ([prefix isEqualToString:(NSString *)router.cmdScheme]) {
+        if ([router.loginCommand isEqualToString:(NSString *)command]) {
+            if (router.loginHandler == nil) {
+                NSString *message = [NSString stringWithFormat:@"响应指令: \"%@\"需要用户登录，请通过setupUserLoginCommand:...方法设置用户登录回调", command];
+                NSAssert(NO, message);
+                return NO;
+            }
+            router.loginHandler(command, param, callback, nil);
+            return YES;
+        }
+        
         [router sendCommand:command
                      withVc:fromVc
                       param:param
@@ -229,15 +245,6 @@
                   animation:animation
                    callback:callback
                setupPresent:setupPresentBlock];
-        return YES;
-    }
-    
-    // http，https使用web打开
-    if ([command hasPrefix:@"http://"] || [command hasPrefix:@"https://"]) {
-        if (router.webUrlHandler == nil) {
-            NSAssert(router.cmdScheme.length, @"未设置网页跳转响应，请调用setupWebUrlHandle:进行设置");
-        }
-        kDR_SAFE_BLOCK(router.webUrlHandler, (NSString *)command, param, fromVc, isPresent, animation, callback);
         return YES;
     }
     
