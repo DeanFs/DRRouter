@@ -18,13 +18,13 @@ typedef void (^DRRouterCallBackBlock)(NSInteger actionCode, NSDictionary *param)
 
 @protocol DRRouterHandlerOpen <NSObject>
 
+@optional
 // 页面事件回调
 @property (nonatomic, copy) DRRouterCallBackBlock callBackBlock;
 
 // 可以通过路由指令打开的页面，选择实现如下任一方法，必须实现其中一个
 // 否则路由指令不能响应
 // viewControllerA->viewControllerB，则在B中实现
-@optional
 /**
  在可以通过路由打开的类中实现
  当其他类欲通过路由指令打开时调用，实现页面实例化和跳转逻辑
