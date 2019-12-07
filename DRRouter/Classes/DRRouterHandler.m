@@ -209,7 +209,7 @@
     UIViewController *fromVc = viewController;
     if (!fromVc) {
         if (router.getTopVcBlock == nil) {
-            NSAssert(NO, @"无法获取当前顶层视图控制器，请通过setupDefaultInitialMethod:..topViewController:设置获取顶层控制的回调");
+            kDR_LOG(@"无法获取当前顶层视图控制器，请通过setupDefaultInitialMethod:..topViewController:设置获取顶层控制的回调");
             return NO;
         }
         fromVc = kDR_SAFE_BLOCK(router.getTopVcBlock);
@@ -219,19 +219,22 @@
     NSString *prefix = [[command componentsSeparatedByString:@"://"].firstObject lowercaseString];
     if ([prefix isEqualToString:@"http"] || [prefix isEqualToString:@"https"]) {
         if (router.webUrlHandler == nil) {
-            NSAssert(router.cmdScheme.length, @"未设置网页跳转响应，请调用setupWebUrlHandle:进行设置");
+            kDR_LOG(@"未设置网页跳转响应，请调用setupWebUrlHandle:进行设置");
+            return NO;
         }
         kDR_SAFE_BLOCK(router.webUrlHandler, (NSString *)command, param, fromVc, isPresent, animation, callback);
         return YES;
     }
-    NSAssert(router.cmdScheme.length, @"未设置命令协议头，请调用+setupCommandScheme:进行设置");
+    if (router.cmdScheme.length == 0) {
+        kDR_LOG(@"未设置命令协议头，请调用+setupCommandScheme:进行设置");
+        return NO;
+    }
     
     // 处理自定义的指令集
     if ([prefix isEqualToString:(NSString *)router.cmdScheme]) {
         if ([router.loginCommand isEqualToString:(NSString *)command]) {
             if (router.loginHandler == nil) {
-                NSString *message = [NSString stringWithFormat:@"响应指令: \"%@\"需要用户登录，请通过setupUserLoginCommand:...方法设置用户登录回调", command];
-                NSAssert(NO, message);
+                kDR_LOG(@"响应指令: \"%@\"需要用户登录，请通过setupUserLoginCommand:...方法设置用户登录回调", command);
                 return NO;
             }
             router.loginHandler(command, param, callback, nil);
@@ -254,8 +257,8 @@
         url = [NSURL URLWithString:[NSString stringWithFormat:@"%@", command]];
     }
     if (!url) {
-        NSString *message = [NSString stringWithFormat:@"不能识别的指令: \"%@\"", command];
-        NSAssert(NO, message);
+        kDR_LOG(@"不能识别的指令: \"%@\"", command);
+        return NO;
     }
     return [[UIApplication sharedApplication] openURL:url];
 }
@@ -279,8 +282,8 @@
                 return;
             }
         } else {
-            NSString *message = [NSString stringWithFormat:@"响应指令: \"%@\"需要用户登录，请通过setupUserLoginCommand:...方法设置用户登录回调", command];
-            NSAssert(NO, message);
+            kDR_LOG(@"响应指令: \"%@\"需要用户登录，请通过setupUserLoginCommand:...方法设置用户登录回调", command);
+            return;
         }
     }
     if (itme.targetPageClass) {
@@ -296,8 +299,10 @@
             ((void (*)(id, SEL, UIViewController*, id, DRRouterCallBackBlock))objc_msgSend)(itme.targetPageClass, @selector(openFromViewController:withParam:callback:), fromVc, param, callback);
             return;
         }
-        
-        NSAssert([fromVc isKindOfClass:[UIViewController class]], @"无法获取当前顶层视图控制器...");
+        if (![fromVc isKindOfClass:[UIViewController class]]) {
+            kDR_LOG(@"无法获取当前顶层视图控制器...");
+            return;
+        }
         // 实例化目标视图控制器
         UIViewController *toVc = [self getDestinationVcWithItem:itme param:param callback:callback];
         // 执行页面跳转
@@ -308,8 +313,7 @@
                 setupPresent:setupPresentBlock];
         return;
     }
-    NSString *message = [NSString stringWithFormat:@"指令：\"%@\"未注册", command];
-    NSAssert(NO, message);
+    kDR_LOG(@"指令：\"%@\"未注册", command);
 }
 
 // 实例化目标视图控制器
@@ -340,8 +344,8 @@
         toVc = (UIViewController *)[[item.targetPageClass alloc] init];
     }
     if (![toVc isKindOfClass:[UIViewController class]]) {
-        NSString *message = [NSString stringWithFormat:@"指令：\"%@\"对应的类：\"%@\"不是视图控制UIViewController的子类", item.commad, NSStringFromClass(item.targetPageClass)];
-        NSAssert(NO, message);
+        kDR_LOG(@"指令：\"%@\"对应的类：\"%@\"不是视图控制UIViewController的子类", item.commad, NSStringFromClass(item.targetPageClass));
+        return nil;
     }
     NSMutableDictionary *allParam = [NSMutableDictionary dictionary];
     if (callback != nil) {
