@@ -24,8 +24,6 @@
 
 /**
  单个注册指令
- 请在可以通过路由打开的页面中通过REGISTER_ROUTER_DOMMAND实现注册，不建议直接调用该方法
- viewControllerA->viewControllerB，则在B中调用REGISTER_ROUTER_DOMMAND(gotoB_command)
  
  @param cmd 指令字符串
  @param targetPageClass 对应类名
@@ -33,6 +31,16 @@
 + (void)registerCommand:(const NSString *)cmd
         targetPgaeClass:(Class)targetPageClass
               needLogin:(BOOL)needLogin;
+
+/**
+ 单个注册指令，忽略重复叠加相同页面，即允许同一个页面类重复叠加
+ 
+ @param cmd 指令字符串
+ @param targetPageClass 对应类名
+ */
++ (void)registerIgnoreRouterSamePageCommand:(const NSString *)cmd
+                            targetPgaeClass:(Class)targetPageClass
+                                  needLogin:(BOOL)needLogin;
 
 /**
  设置统一的页面实例化方法，在路由目标页没有实现open方法的情况下调用传入的initialMethod

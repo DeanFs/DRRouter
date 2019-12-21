@@ -82,6 +82,20 @@
 }
 
 /**
+ 单个注册指令，忽略重复叠加相同页面，即允许同一个页面类重复叠加
+ 
+ @param cmd 指令字符串
+ @param targetPageClass 对应类名
+ */
++ (void)registerIgnoreRouterSamePageCommand:(const NSString *)cmd
+                            targetPgaeClass:(Class)targetPageClass
+                                  needLogin:(BOOL)needLogin {
+    [DRRouterHandler router].cmdsMap[cmd] = [DRRouterItem routerItemIgnoreRouterSamePageWithCommand:cmd
+                                                                                    targetPageClass:targetPageClass
+                                                                                          needLogin:needLogin];
+}
+
+/**
  设置统一的页面实例化方法，在路由目标页没有实现open方法的情况下调用传入的initialMethod
  >>>>>>注：可选实现
  
