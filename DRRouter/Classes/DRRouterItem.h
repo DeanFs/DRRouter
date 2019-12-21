@@ -29,6 +29,9 @@
  */
 @property (nonatomic, strong, readonly) NSDictionary *staticParam;
 
+/// 忽略重复叠加相同页面，即允许同一个页面类重复叠加，default: NO
+@property (assign, nonatomic) BOOL ignoreRouterSamePage;
+
 /**
  构建一个路由指令
 
@@ -40,5 +43,17 @@
 + (instancetype)routerItemWithCommand:(const NSString *)command
                       targetPageClass:(Class)targetPageClass
                             needLogin:(BOOL)needLogin;
+
+/**
+ 构建一个路由指令，忽略重复叠加相同页面，即允许同一个页面类重复叠加
+ 
+ @param command 指令名称
+ @param targetPageClass 路由目标页面类
+ @param needLogin 需要登录
+ @return 指令
+ */
++ (instancetype)routerItemIgnoreRouterSamePageWithCommand:(const NSString *)command
+                                          targetPageClass:(Class)targetPageClass
+                                                needLogin:(BOOL)needLogin;
 
 @end

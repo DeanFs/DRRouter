@@ -287,7 +287,7 @@
         }
     }
     if (itme.targetPageClass) {
-        if ([fromVc isKindOfClass:itme.targetPageClass]) { // 避免重复叠加同一个页面
+        if (!itme.ignoreRouterSamePage && [fromVc isKindOfClass:itme.targetPageClass]) { // 避免重复叠加同一个页面
             return;
         }
         // 实现了协议方法的跳转
